@@ -1,23 +1,43 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import './App.css';
 import {Button} from "./Button"
 import {Input} from "./Input";
 
 function App() {
 
-    const retrievedStart = JSON.parse(localStorage.getItem('start') || '0');
-    const retrievedMax = JSON.parse(localStorage.getItem('max') || '1');
 
 
-    let [num, setNum] = useState(retrievedStart);
-    let [max, setMax] = useState(retrievedMax)
+
+    let [num, setNum] = useState(0);
+    let [max, setMax] = useState(5)
     let [start, setStart] = useState(num)
     let [error, setError] = useState(false)
     let [editMode, setEditMode] = useState(false)
     const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
-    localStorage.setItem('start', JSON.stringify(start));
-    localStorage.setItem('max', JSON.stringify(max));
+    const isFirstRender = useRef(true);
+
+    useEffect(() => {
+        const retrievedStart = JSON.parse(localStorage.getItem('start') || '0');
+        const retrievedMax = JSON.parse(localStorage.getItem('max') || '3');
+        setNum(retrievedStart)
+        setStart(retrievedStart)
+        setMax(retrievedMax)
+    }, []);
+
+
+    useEffect(() => {
+
+        if (isFirstRender.current) {
+            isFirstRender.current = false;
+            return;
+        }
+
+            localStorage.setItem('start', JSON.stringify(start));
+            localStorage.setItem('max', JSON.stringify(max));
+
+    }, [start,max]);
+
 
 
     useEffect(() => {
@@ -48,19 +68,28 @@ function App() {
         setNum(start)
 
         setIsButtonDisabled(true)
+        setEditMode(false)
+    }
+    const turnSetMode = () => {
+        setEditMode(true)
     }
     const startValueChanger = (e: number) => {
         setStart(e)
-        setNum(start)
+        // setNum(start)
     }
     const maxValueChanger = (e: number) => {
+
         setMax(e)
-        setNum(start)
+        // setNum(start)
     }
 
 
     return (
         <div className="App">
+
+            { !editMode
+
+            ?
 
             <div className={"mainTablet"}>
                 <div className={"mainWindow"}>
@@ -70,27 +99,25 @@ function App() {
                 <div className={"buttonsArea"}>
                     <Button title={"inc"} callBack={incValueSetter} disableMarker={num >= max || editMode}/>
                     <Button title={"reset"} callBack={resetValueSetter} disableMarker={num === start || editMode}/>
+                    <Button title={"set"} callBack={turnSetMode} disableMarker={false}/>
                 </div>
             </div>
 
+            :
+
             <div className={"mainTablet"}>
                 <div className={"mainWindow"}>
-                    {/*<div className={"inputAndSpan"}>*/}
-                    {/*    <span>max value:</span>*/}
-                    {/*    <input type={"number"}*/}
-                    {/*           value={max}*/}
-                    {/*           className={error ? "Error" : ""}*/}
-                    {/*           onChange={(e) => onChangeMaxValueHandler(+e.target.value)}/>*/}
-                    {/*</div>*/}
 
                     <Input title={"max"} value={max} callBack={maxValueChanger} setEditMode={setEditMode}/>
                     <Input title={"start"} value={start} callBack={startValueChanger} setEditMode={setEditMode}/>
 
                 </div>
                 <div className={"buttonsArea"}>
-                    <Button title={"set"} callBack={setValueSetter} disableMarker={error || isButtonDisabled}/>
+                    <Button title={"set"} callBack={setValueSetter} disableMarker={error}/>
                 </div>
             </div>
+
+            }
 
         </div>
     );

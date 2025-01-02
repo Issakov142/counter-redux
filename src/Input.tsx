@@ -17,7 +17,7 @@ export const Input: React.FC<InputPropsType> = (props: InputPropsType) => {
         props.setEditMode(true)
     }
     const onBlurHandler = ()=>{
-        props.setEditMode(false)
+        // props.setEditMode(false)
     }
 
 
