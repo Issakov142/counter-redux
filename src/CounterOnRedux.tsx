@@ -6,34 +6,34 @@ import {useDispatch, useSelector} from 'react-redux';
 import {AppDispatch, RootState, store} from './app/store';
 import {changeMaxAC, changeNumAC, changeStartAC, initialState} from './app/app-reducer';
 
-function App() {
+export function CounterOnRedux() {
     const dispatch = useDispatch<AppDispatch>();
     const { start, max, num } = useSelector((state: RootState) => state.app);
-    const hah = useSelector((state: RootState) => state.storage);
+    // const hah = useSelector((state: RootState) => state.storage);
 
-    if (hah){
-        console.log(hah.start2)
-    }
+    // if (hah){
+    //     console.log(hah.start2)
+    // }
 
     const [editMode, setEditMode] = React.useState(false);
     // const [num, setNum] = React.useState(start);
     const [error, setError] = React.useState(false);
 
     // Load from localStorage when the app initializes
-    useEffect(() => {
-        const retrievedStart = JSON.parse(localStorage.getItem('start') || '0');
-        const retrievedMax = JSON.parse(localStorage.getItem('max') || '6');
-
-        dispatch(changeStartAC(retrievedStart));
-        dispatch(changeMaxAC(retrievedMax));
-        dispatch(changeNumAC(retrievedStart));
-    }, [dispatch]);
-
-    // Save to localStorage whenever start or max changes
-    useEffect(() => {
-        localStorage.setItem('start', JSON.stringify(start));
-        localStorage.setItem('max', JSON.stringify(max));
-    }, [start, max]);
+    // useEffect(() => {
+    //     const retrievedStart = JSON.parse(localStorage.getItem('start') || '0');
+    //     const retrievedMax = JSON.parse(localStorage.getItem('max') || '6');
+    //
+    //     dispatch(changeStartAC(retrievedStart));
+    //     dispatch(changeMaxAC(retrievedMax));
+    //     dispatch(changeNumAC(retrievedStart));
+    // }, [dispatch]);
+    //
+    // // Save to localStorage whenever start or max changes
+    // useEffect(() => {
+    //     localStorage.setItem('start', JSON.stringify(start));
+    //     localStorage.setItem('max', JSON.stringify(max));
+    // }, [start, max]);
 
     // Handle error state when max <= start or start < 0
     useEffect(() => {
@@ -67,7 +67,7 @@ function App() {
         dispatch(changeMaxAC(value));
     };
 
-    console.log(loadState())
+
 
     return (
         <div className="App">
@@ -101,24 +101,25 @@ function App() {
     );
 }
 
-export default App;
-
-export const loadState = () => {
-    try {
-        const serializedState = localStorage.getItem('start');
-        const serializedState2 = localStorage.getItem('max');
-        if (serializedState === null || serializedState2 === null) {
-            return undefined;
-        }
-
-        return {
-            start2: JSON.parse(serializedState),
-            max2: JSON.parse(serializedState2),
-        }
-    } catch (err) {
-        return undefined;
-    }
-};
+// export default CounterOnRedux;
+//
+// export const loadState = () => {
+//     console.log("bubububu")
+//     try {
+//         const serializedState = localStorage.getItem('start');
+//         const serializedState2 = localStorage.getItem('max');
+//         if (serializedState === null || serializedState2 === null) {
+//             return undefined;
+//         }
+//
+//         return {
+//             start2: JSON.parse(serializedState),
+//             max2: JSON.parse(serializedState2),
+//         }
+//     } catch (err) {
+//         return undefined;
+//     }
+// };
 
 // // localStorage.js
 // export const saveState = (state: any) => {

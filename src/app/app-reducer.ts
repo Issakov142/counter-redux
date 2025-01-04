@@ -1,8 +1,15 @@
 export const initialState = {
-    start: JSON.parse(localStorage.getItem('start') || '0'),
-    max: JSON.parse(localStorage.getItem('max') || '0'),
+    start: 0,
+    max: 5,
     num: 0,
 }
+// export const initialState = {
+//     start: JSON.parse(localStorage.getItem('start') || '0'),
+//     max: JSON.parse(localStorage.getItem('max') || '0'),
+//     num: JSON.parse(localStorage.getItem('start') || '0'),
+// }
+// export const initialState = {}
+
 
 export const appReducer = (state: InitialState = initialState, action: ActionsType): InitialState => {
 

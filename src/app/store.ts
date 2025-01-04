@@ -1,28 +1,33 @@
-import { combineReducers, legacy_createStore } from 'redux'
+import { combineReducers, legacy_createStore, Store, AnyAction } from 'redux';
+import { appReducer } from './app-reducer';
+import {loadState} from '../loadToStorageFunction';
 
-import {appReducer} from './app-reducer';
-import {loadState} from '../CounterOnRedux';
-
-// объединяя reducer-ы с помощью combineReducers,
-// мы задаём структуру нашего единственного объекта-состояния
+// Define the root reducer
 const rootReducer = combineReducers({
     app: appReducer,
-    storage: loadState
-})
-// непосредственно создаём store
-export const store = legacy_createStore(rootReducer)
+});
 
-store.subscribe(()=>{
+// Define the type of the entire state
+export type RootState = ReturnType<typeof rootReducer>;
 
-        localStorage.setItem('start', JSON.stringify(store.getState().storage?.start2));
-        localStorage.setItem('max', JSON.stringify(store.getState().storage?.max2));
+// Load the preloaded state (with proper type)
+const preloadedState: RootState = loadState()
 
-    })
+// Create the Redux store with the preloaded state
 
-// определить автоматически тип всего объекта состояния
-export type RootState = ReturnType<typeof store.getState>
-export type AppDispatch = typeof store.dispatch
-
-// а это, чтобы можно было в консоли браузера обращаться к store в любой момент
 // @ts-ignore
-window.store = store
+export const store: Store<RootState, AnyAction> = legacy_createStore(rootReducer, preloadedState);
+// export const store: Store<RootState> = legacy_createStore(rootReducer);
+// Subscribe to store changes and save to local storage
+store.subscribe(() => {
+    const state = store.getState();
+    localStorage.setItem('start', JSON.stringify(state.app.start));
+    localStorage.setItem('max', JSON.stringify(state.app.max));
+});
+
+// Export types for dispatch
+export type AppDispatch = typeof store.dispatch;
+
+// Allow debugging in the browser console
+// @ts-ignore
+window.store = store;
