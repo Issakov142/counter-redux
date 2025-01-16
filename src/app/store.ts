@@ -21,8 +21,9 @@ export const store: Store<RootState, AnyAction> = legacy_createStore(rootReducer
 // Subscribe to store changes and save to local storage
 store.subscribe(() => {
     const state = store.getState();
-    localStorage.setItem('start', JSON.stringify(state.app.start));
-    localStorage.setItem('max', JSON.stringify(state.app.max));
+    // localStorage.setItem('start', JSON.stringify(state.app.start));
+    // localStorage.setItem('max', JSON.stringify(state.app.max));
+    localStorage.setItem('app-state', JSON.stringify(state))
 });
 
 // Export types for dispatch

@@ -37,7 +37,7 @@ export const changeStartAC = (num: number) => {
     return {
         type: 'change_start',
         payload: {num}
-    }
+    } as const
 }
 export const changeMaxAC = (num: number) => {
     return {
@@ -61,4 +61,4 @@ export type ChangeNumActionType = ReturnType<typeof changeNumAC>
 
 type ActionsType = ChangeStartActionType | ChangeMaxActionType | ChangeNumActionType
 
-type InitialState = typeof initialState
+export type InitialState = typeof initialState

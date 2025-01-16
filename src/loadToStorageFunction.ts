@@ -4,17 +4,13 @@ export const loadState = (): any => {
     try {
         const serializedStart = localStorage.getItem('start');
         const serializedMax = localStorage.getItem('max');
-        if (serializedStart === null || serializedMax === null) {
+        const state = localStorage.getItem('app-state')
+        if (serializedStart === null || serializedMax === null || state === null) {
             return undefined; // Use default state from reducers
         }
 
-        return {
-            app: {
-                start: JSON.parse(serializedStart),
-                max: JSON.parse(serializedMax),
-                num: JSON.parse(serializedStart), // Initialize num to start
-            },
-        };
+        return JSON.parse(state)
+
     } catch (err) {
         console.error("Failed to load state:", err);
         return undefined;

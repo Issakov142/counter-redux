@@ -4,11 +4,11 @@ import {Button} from "./Button"
 import {Input} from "./Input";
 import {useDispatch, useSelector} from 'react-redux';
 import {AppDispatch, RootState, store} from './app/store';
-import {changeMaxAC, changeNumAC, changeStartAC, initialState} from './app/app-reducer';
+import {changeMaxAC, changeNumAC, changeStartAC, type InitialState, initialState} from './app/app-reducer';
 
 export function CounterOnRedux() {
     const dispatch = useDispatch<AppDispatch>();
-    const { start, max, num } = useSelector((state: RootState) => state.app);
+    const { start, max, num } = useSelector<RootState, InitialState>((state: RootState) => state.app);
     // const hah = useSelector((state: RootState) => state.storage);
 
     // if (hah){
