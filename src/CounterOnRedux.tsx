@@ -4,7 +4,7 @@ import {Button} from "./Button"
 import {Input} from "./Input";
 import {useDispatch, useSelector} from 'react-redux';
 import {AppDispatch, RootState, store} from './app/store';
-import {changeMaxAC, changeNumAC, changeStartAC, type InitialState, initialState} from './app/app-reducer';
+import {changeMaxAC, changeNumAC, changeNumTC, changeStartAC,setValueFromLCTC, type InitialState, initialState} from './app/app-reducer';
 
 export function CounterOnRedux() {
     const dispatch = useDispatch<AppDispatch>();
@@ -17,7 +17,13 @@ export function CounterOnRedux() {
 
     const [editMode, setEditMode] = React.useState(false);
     // const [num, setNum] = React.useState(start);
-    const [error, setError] = React.useState(false);
+    const [error, setError] = React.useState(false)
+
+    useEffect(() => {
+        // @ts-ignore
+        dispatch(setValueFromLCTC())
+
+    }, []);;
 
     // Load from localStorage when the app initializes
     // useEffect(() => {
@@ -46,7 +52,9 @@ export function CounterOnRedux() {
 
     const incValueSetter = () => {
         if (num < max) {
-            dispatch(changeNumAC(num+1));
+
+            // @ts-ignore
+            dispatch(changeNumTC());
         }
     };
 

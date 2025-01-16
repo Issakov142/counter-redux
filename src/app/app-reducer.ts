@@ -1,3 +1,7 @@
+import type {AnyAction, Dispatch} from 'redux';
+import type {ThunkDispatch} from 'redux-thunk';
+import type {AppStateType, RootState} from './store';
+
 export const initialState = {
     start: 0,
     max: 5,
@@ -30,6 +34,25 @@ export const appReducer = (state: InitialState = initialState, action: ActionsTy
     }
 
 }
+//Thunks
+
+// export const changeNumTC = (value: number) => (dispatch: Dispatch) => {
+//     localStorage.setItem('num', JSON.stringify(value))
+//     dispatch(changeNumAC(value))
+// }
+export const changeNumTC = () => (dispatch: Dispatch, getState: () => AppStateType) => {
+    let currNum = getState().app.num
+    localStorage.setItem('num', JSON.stringify(currNum + 1))
+    dispatch(changeNumAC(currNum + 1))
+}
+
+export  const setValueFromLCTC = () => (dispatch: Dispatch) => {
+    let val = localStorage.getItem('num')
+    if (val) {
+        let newVal = JSON.parse(val)
+        dispatch(changeNumAC(newVal))
+    }
+}
 
 //Action Creators
 
@@ -58,6 +81,7 @@ export const changeNumAC = (num: number) => {
 export type ChangeStartActionType = ReturnType<typeof changeStartAC>
 export type ChangeMaxActionType = ReturnType<typeof changeMaxAC>
 export type ChangeNumActionType = ReturnType<typeof changeNumAC>
+
 
 type ActionsType = ChangeStartActionType | ChangeMaxActionType | ChangeNumActionType
 
